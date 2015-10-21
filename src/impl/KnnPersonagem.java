@@ -2,31 +2,26 @@ package impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import comparator.PersonagemCabeloComparator;
-import comparator.PersonagemChainedComparator;
-import comparator.PersonagemIdadeComparator;
-import comparator.PersonagemPesoComparator;
-
 import bean.Personagem;
 import bean.PersonagemDiff;
+import bean.PersonagemDiffBuilder;
+
+import comparator.PersonagemDiffChainedComparator;
+import comparator.PersonagemDiffDistanciaComparator;
 
 public class KnnPersonagem {
 
 	public static String getClasse(List<Personagem> conjPersonagem,
 			Personagem desconhecido, int range) {
 
-		List<Personagem> diffAttributes = getAttributesDiff(conjPersonagem,
+		List<PersonagemDiff> diffAttributes = getAttributesDiff(conjPersonagem,
 				desconhecido);
 
-		Collections.sort(diffAttributes, new PersonagemChainedComparator(
-				new PersonagemIdadeComparator(),
-				new PersonagemCabeloComparator(),
-				new PersonagemPesoComparator()));
+		Collections.sort(diffAttributes, new PersonagemDiffChainedComparator(new PersonagemDiffDistanciaComparator()));
 
 		return getClasseModa(diffAttributes, range);
 	}
@@ -37,7 +32,7 @@ public class KnnPersonagem {
 	 * @param range Quantidade de exemplos do conjunto a serem utilizados como critério.
 	 * @return Classe que mais aparece dentro do intervalo solicitado no conjunto de dados passado.
 	 */
-	private static String getClasseModa(List<Personagem> diffAttributes,
+	private static String getClasseModa(List<PersonagemDiff> diffAttributes,
 			int range) {
 		HashMap<String, Integer> mClasse = getSomaAttributesClasse(
 				diffAttributes, range);
@@ -53,7 +48,7 @@ public class KnnPersonagem {
 	}
 
 	private static HashMap<String, Integer> getSomaAttributesClasse(
-			List<Personagem> diffAttributes, int range) {
+			List<PersonagemDiff> diffAttributes, int range) {
 		HashMap<String, Integer> mClasse = new HashMap<>();
 
 		for (int i = 0; i < range; i++) {
@@ -80,12 +75,12 @@ public class KnnPersonagem {
 	 * @return Lista com objetos contendo a diferença entre o objeto de cada
 	 *         junto comparado ao objeto Personagem desconhecido.
 	 */
-	private static List<Personagem> getAttributesDiff(
+	private static List<PersonagemDiff> getAttributesDiff(
 			List<Personagem> conjPersonagem, Personagem desconhecido) {
-		List<Personagem> lstAtributes = new ArrayList<>();
+		List<PersonagemDiff> lstAtributes = new ArrayList<>();
 
 		for (Personagem personagem : conjPersonagem) {
-			lstAtributes.add(new PersonagemDiff(personagem, desconhecido)
+			lstAtributes.add(new PersonagemDiffBuilder(personagem, desconhecido)
 					.constroi());
 		}
 

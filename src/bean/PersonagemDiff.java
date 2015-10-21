@@ -1,38 +1,28 @@
 package bean;
 
 public class PersonagemDiff {
-	private Personagem personagemDiff = new Personagem();
-
-	private Personagem pAmostra;
-	private Personagem pDesconhecido;
-
-	public PersonagemDiff(Personagem amostra, Personagem desconhecido) {
-		this.pAmostra = amostra;
-		this.pDesconhecido = desconhecido;
+	private String nome;
+	private String classe;
+	private double distancia;
+	public String getNome() {
+		return nome;
 	}
-
-	public Personagem constroi() {
-		personagemDiff.setNome(pAmostra.getNome());
-		personagemDiff.setCabelo(getDiffAttr(pDesconhecido.getCabelo(),
-				pAmostra.getCabelo()));
-
-		personagemDiff.setIdade(getDiffAttr(pDesconhecido.getIdade(),
-				pAmostra.getIdade()));
-
-		personagemDiff.setPeso(getDiffAttr(pDesconhecido.getPeso(),
-				pAmostra.getPeso()));
-
-		personagemDiff.setClasse(pAmostra.getClasse());
-
-		return personagemDiff;
-
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
-
-	private double getDiffAttr(double attr1, double attr2) {
-		if (Math.max(attr1, attr2) == attr1)
-			return attr1 - attr2;
-		else
-			return attr2 - attr1;
+	public String getClasse() {
+		return classe;
 	}
+	public void setClasse(String classe) {
+		this.classe = classe;
+	}
+	public double getDistancia() {
+		return distancia;
+	}
+	public void setDistancia(double distancia) {
+		this.distancia = distancia;
+	}
+	
+	
 
 }
